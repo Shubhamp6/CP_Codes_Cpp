@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "*.ejs": "html",
+        "ostream": "cpp",
+        "iostream": "cpp",
+        "cmath": "cpp",
+        "type_traits": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "Disabled",
+    "cph.general.onceMaintainerMessage": false
+}
