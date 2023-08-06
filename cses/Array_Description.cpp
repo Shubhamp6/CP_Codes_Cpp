@@ -9,36 +9,40 @@ int32_t main()
     cin.tie(NULL), cout.tie(NULL);
     int n, m;
     cin >> n >> m;
-    int a[n];
+    vector<int> a(n,0);
     for (int i = 0; i < n; i++)
-        cin >> a[i];
-    vector<int> dp(n + 1, 1);
-    dp[0] = 1;
-    for (int i = 1; i < n + 1; i++)
     {
-        if (a[i - 1] == 0)
+        cin >> a[i];
+    }
+    vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+    for (int i = 1; i < m + 1; ++i)
+    {
+        if (a[0] == 0 || a[0] == i)
+            dp[0][i] = 1;
+        else
+            dp[0][i] = 0;
+    }
+    for (int i = 1; i < n + 1; ++i)
+    {
+        for (int j = 1; j < m + 1; ++j)
         {
-            int count = 0;
-            for (int j = 1; j < m + 1; j++)
+            if (a[i] != 0 && a[i] != j)
+                dp[i][j] = 0;
+            else
             {
-                int flag1 = 1, flag2 = 1;
-                if (i >= 2)
-                {
-                    if (abs(j - a[i - 2]) > 1 && a[i - 2] != 0)
-                        flag1--;
-                }
-                if (i <= n - 1)
-                {
-                    if (abs(j - a[i]) > 1 && a[i] != 0)
-                        flag2--;
-                }
-                if (flag1 && flag2)
-                    count++;
+                dp[i][j] = dp[i - 1][j]%MOD;
+                dp[i][j] = (dp[i][j]%MOD + dp[i - 1][j - 1]%MOD)%MOD;
+                if(j < m)
+                dp[i][j] = (dp[i][j]%MOD + dp[i - 1][j + 1]%MOD)%MOD;
             }
-            dp[i] = (dp[i - 1]%MOD * count)%MOD;
         }
     }
-    cout << dp[n] << endl;
 
+    int ans = 0;
+    for (int i = 1; i < m + 1; ++i)
+    {
+        ans =  (ans + dp[n - 1][i])%MOD;
+    }
+    cout << ans << "\n";
     return 0;
 }
